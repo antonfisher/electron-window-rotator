@@ -1,0 +1,30 @@
+{
+  "name": "electron-window-rotator",
+  "version": "1.0.0",
+  "description": "Rotate native Electron window on macOS",
+  "author": "Anton Fisher <a.fschr@gmail.com> (http://antonfisher.com)",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "configure": "node-gyp configure",
+    "debug": "node-gyp rebuild --debug",
+    "build": "node-gyp rebuild --release",
+    "start": "npm run build && cd demo && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antonfisher/electron-window-rotator.git"
+  },
+  "keywords": [
+    "electron",
+    "electronjs",
+    "nswindow"
+  ],
+  "bugs": {
+    "url": "https://github.com/antonfisher/electron-window-rotator/issues"
+  },
+  "homepage": "https://github.com/antonfisher/electron-window-rotator#readme",
+  "dependencies": {
+    "bindings": "^1.5.0"
+  }
+}
