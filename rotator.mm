@@ -130,6 +130,14 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   [imageLayer setContents:image];
   [imageLayer setCornerRadius:10.0f];
   [imageLayer setMasksToBounds:YES]; // cuts shadows as well
+
+  // show the animation window to calculate its real offset from the top of the
+  // screen -- macOS doesn't allow window to go up of the top edge of the screen
+  [animationWindow setAlphaValue:0.0];
+  [animationWindow makeKeyAndOrderFront:nil];
+  CGFloat screenHeight = NSHeight([[NSScreen mainScreen] frame]);
+  CGFloat windowTopPointY = window.frame.origin.y + NSHeight(window.frame);
+  offsetY = window.frame.origin.y - animationWindow.frame.origin.y;
   [imageLayer setFrame:CGRectMake(offsetX, offsetY, width, height)];
 
   // add image layer to the animation window, set up OS shadows
@@ -139,9 +147,9 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   [animationWindowLayer setShadowOpacity:0.7f];
   [animationWindowLayer setShadowOffset:CGSizeMake(0, -20)];
 
-  // replace window with its screenshot and start animation
+  // replace the original window with its screenshot and start animation
   [window setAlphaValue:0.0];
-  [animationWindow makeKeyAndOrderFront:nil];
+  [animationWindow setAlphaValue:1.0];
   [CATransaction begin];
   CABasicAnimation *animation =
       [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
