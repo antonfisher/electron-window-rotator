@@ -13,6 +13,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('rotate').addEventListener('click', () => {
-    ipcRenderer.send('rotate');
+    ipcRenderer.send('rotate', document.getElementById('duration').value);
   });
 });

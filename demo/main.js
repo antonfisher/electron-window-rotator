@@ -18,10 +18,11 @@ function createWindow() {
   mainWindow.loadFile('index.html');
 
   // "Rotate" button handler
-  ipcMain.on('rotate', () => {
+  ipcMain.on('rotate', (event, duration) => {
     mainWindow.webContents.capturePage().then((img) => {
+      const d = Math.min(Number.MAX_SAFE_INTEGER, Math.max(1, duration || 1));
       // call with native window handle and webview screenshot
-      rotator.rotate(mainWindow.getNativeWindowHandle(), img.toPNG());
+      rotator.rotate(mainWindow.getNativeWindowHandle(), img.toPNG(), d);
     });
   });
 }

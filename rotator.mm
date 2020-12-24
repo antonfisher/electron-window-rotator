@@ -8,14 +8,14 @@ napi_value rotate(napi_env env, napi_callback_info info) {
 
   napi_status status;
 
-  size_t argc = 2;
-  napi_value args[2];
+  size_t argc = 3;
+  napi_value args[3];
   status = napi_get_cb_info(env, info, &argc, args, 0, 0);
   if (status != napi_ok) {
     napi_throw_error(
         env, NULL, "electron-window-rotator:rotate(): failed to get arguments");
     return NULL;
-  } else if (argc < 2) {
+  } else if (argc < 3) {
     napi_throw_error(
         env, NULL,
         "electron-window-rotator:rotate(): wrong number of arguments");
@@ -58,6 +58,19 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   } else if (electronScreenshotBufferLength == 0) {
     napi_throw_error(
         env, NULL, "electron-window-rotator:rotate(): empty screenshot handle");
+    return NULL;
+  }
+
+  int duration;
+  status = napi_get_value_int32(env, args[2], &duration);
+  if (status != napi_ok) {
+    napi_throw_error(
+        env, NULL,
+        "electron-window-rotator:rotate(): cannot read duration from args");
+    return NULL;
+  } else if (duration == 0) {
+    napi_throw_error(env, NULL,
+                     "electron-window-rotator:rotate(): empty duration arg");
     return NULL;
   }
 
@@ -153,7 +166,7 @@ napi_value rotate(napi_env env, napi_callback_info info) {
       [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
   [animation setFromValue:[NSNumber numberWithDouble:0.0]];
   [animation setToValue:[NSNumber numberWithDouble:2.0 * M_PI]];
-  [animation setDuration:1.0];
+  [animation setDuration:duration / 1000.0];
   [CATransaction setCompletionBlock:^{
     [window setAlphaValue:1.0];
     [animationWindow close];
