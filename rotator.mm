@@ -135,8 +135,6 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   // screen -- macOS doesn't allow window to go up of the top edge of the screen
   [animationWindow setAlphaValue:0.0];
   [animationWindow makeKeyAndOrderFront:nil];
-  CGFloat screenHeight = NSHeight([[NSScreen mainScreen] frame]);
-  CGFloat windowTopPointY = window.frame.origin.y + NSHeight(window.frame);
   offsetY = window.frame.origin.y - animationWindow.frame.origin.y;
   [imageLayer setFrame:CGRectMake(offsetX, offsetY, width, height)];
 
