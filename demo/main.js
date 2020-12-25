@@ -2,7 +2,7 @@
 
 const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
-const rotator = require('../');
+const Rotator = require('../');
 
 function createWindow() {
   // create the browser window
@@ -17,13 +17,24 @@ function createWindow() {
   // load the index.html of the app
   mainWindow.loadFile('index.html');
 
-  // "Rotate" button handler
-  ipcMain.on('rotate', (event, duration) => {
-    mainWindow.webContents.capturePage().then((img) => {
-      const d = Math.min(Number.MAX_SAFE_INTEGER, Math.max(1, duration || 1));
-      // call with native window handle and webview screenshot
-      rotator.rotate(mainWindow.getNativeWindowHandle(), img.toPNG(), d);
-    });
+  // "Rotate" event handler
+  ipcMain.on('rotate', async (event, duration, direction) => {
+    duration = Math.min(Number.MAX_SAFE_INTEGER, Math.max(1, duration || 1));
+    direction =
+      direction === 'left' ? Rotator.DIRECTION_LEFT : Rotator.DIRECTION_RIGHT;
+
+    try {
+      const screenshot = await mainWindow.webContents.capturePage();
+
+      Rotator.rotate(
+        mainWindow.getNativeWindowHandle(),
+        screenshot.toPNG(),
+        duration,
+        direction
+      );
+    } catch (e) {
+      console.error('Failed to rotate windows:', e.stack || e);
+    }
   });
 }
 

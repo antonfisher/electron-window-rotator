@@ -3,19 +3,21 @@
 
 #include "rotator.h"
 
+const int DIRECTION_LEFT = 0;
+
 napi_value rotate(napi_env env, napi_callback_info info) {
   NSLog(@"electron-window-rotator:rotate()");
 
   napi_status status;
 
-  size_t argc = 3;
-  napi_value args[3];
+  size_t argc = 4;
+  napi_value args[4];
   status = napi_get_cb_info(env, info, &argc, args, 0, 0);
   if (status != napi_ok) {
     napi_throw_error(
         env, NULL, "electron-window-rotator:rotate(): failed to get arguments");
     return NULL;
-  } else if (argc < 3) {
+  } else if (argc < 4) {
     napi_throw_error(
         env, NULL,
         "electron-window-rotator:rotate(): wrong number of arguments");
@@ -71,6 +73,15 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   } else if (duration == 0) {
     napi_throw_error(env, NULL,
                      "electron-window-rotator:rotate(): empty duration arg");
+    return NULL;
+  }
+
+  int direction;
+  status = napi_get_value_int32(env, args[3], &direction);
+  if (status != napi_ok) {
+    napi_throw_error(
+        env, NULL,
+        "electron-window-rotator:rotate(): cannot read direction from args");
     return NULL;
   }
 
@@ -165,7 +176,8 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   CABasicAnimation *animation =
       [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
   [animation setFromValue:[NSNumber numberWithDouble:0.0]];
-  [animation setToValue:[NSNumber numberWithDouble:2.0 * M_PI]];
+  CGFloat endAngle = (direction == DIRECTION_LEFT ? 1 : -1) * 2.0 * M_PI;
+  [animation setToValue:[NSNumber numberWithDouble:endAngle]];
   [animation setDuration:duration / 1000.0];
   [CATransaction setCompletionBlock:^{
     [window setAlphaValue:1.0];
