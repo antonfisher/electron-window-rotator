@@ -23,9 +23,11 @@ function createWindow() {
     direction =
       direction === 'left' ? Rotator.DIRECTION_LEFT : Rotator.DIRECTION_RIGHT;
 
-    Rotator.rotate(mainWindow, duration, direction).catch((e) => {
+    try {
+      await Rotator.rotate(mainWindow, duration, direction);
+    } catch (e) {
       console.error('Failed to rotate windows:', e.stack || e);
-    });
+    }
   });
 }
 

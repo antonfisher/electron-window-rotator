@@ -1,26 +1,23 @@
 const NativeExtension = require('bindings')('NativeExtension');
 
-function rotate(electronWindow, duration = 1000, direction = 0) {
-  return new Promise((resolve, reject) => {
+async function rotate(electronWindow, duration = 1000, direction = 0) {
+  try {
     if (process.platform !== 'darwin') {
-      reject(new Error('platform not supported'));
-      return;
+      throw new Error('platform not supported');
     }
-    resolve();
-  })
-    .then(() => electronWindow.webContents.capturePage())
-    .then((screenshot) => {
-      //TODO: return promise from the native module
-      NativeExtension.rotate(
-        electronWindow.getNativeWindowHandle(),
-        screenshot.toPNG(),
-        duration,
-        direction
-      );
-    })
-    .catch((e) => {
-      throw new Error(`electron-window-rotator: failed: ${e.stack || e}`);
-    });
+
+    const screenshot = await electronWindow.webContents.capturePage();
+
+    //TODO: return promise from the native module to use `await`
+    NativeExtension.rotate(
+      electronWindow.getNativeWindowHandle(),
+      screenshot.toPNG(),
+      duration,
+      direction
+    );
+  } catch (e) {
+    throw new Error(`electron-window-rotator: failed: ${e.stack || e}`);
+  }
 }
 
 module.exports = {
