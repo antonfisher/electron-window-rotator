@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/antonfisher/electron-window-rotator/compare/v2.0.0...v2.1.0) (2020-12-26)
+
+
+### Features
+
+* go async/await ([9c27588](https://github.com/antonfisher/electron-window-rotator/commit/9c27588a641daa1f3b4e96d1ba4060d7b1edff5c))
+
 ## 2.0.0 (2020-12-26)
 
 
