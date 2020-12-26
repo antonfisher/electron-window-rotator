@@ -9,7 +9,10 @@
     "configure": "node-gyp configure",
     "debug": "node-gyp rebuild --debug",
     "build": "node-gyp rebuild --release",
-    "start": "npm run build && cd demo && npm start"
+    "start": "npm run build && cd demo && npm start",
+    "release:patch": "npm run build && npx standard-version -r patch && git push --follow-tags origin main",
+    "release:minor": "npm run build && npx standard-version -r minor && git push --follow-tags origin main",
+    "release:major": "npm run build && npx standard-version -r major && git push --follow-tags origin main"
   },
   "repository": {
     "type": "git",
