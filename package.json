@@ -1,6 +1,6 @@
 {
   "name": "electron-window-rotator",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Rotate native Electron window on macOS",
   "author": "Anton Fisher <a.fschr@gmail.com> (http://antonfisher.com)",
   "license": "MIT",
