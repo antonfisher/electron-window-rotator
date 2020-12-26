@@ -32,14 +32,11 @@ npm install electron-window-rotator
 const Rotator = require('electron-window-rotator');
 const mainWindow = new BrowserWindow({ ... });
 
-setInterval(async () => {
-  const screenshot = await mainWindow.webContents.capturePage();
-
+setInterval(() => {
   Rotator.rotate(
-    mainWindow.getNativeWindowHandle(), // native window handle
-    screenshot.toPNG(),                 // webview screenshot
-    1000,                               // duration [ms]
-    Rotator.DIRECTION_LEFT              // direction
+    mainWindow,             // Electron's BrowserWindow instance
+    1000,                   // animation duration [ms]
+    Rotator.DIRECTION_LEFT  // rotation direction
   );
 }, 3000);
 ```

@@ -23,18 +23,9 @@ function createWindow() {
     direction =
       direction === 'left' ? Rotator.DIRECTION_LEFT : Rotator.DIRECTION_RIGHT;
 
-    try {
-      const screenshot = await mainWindow.webContents.capturePage();
-
-      Rotator.rotate(
-        mainWindow.getNativeWindowHandle(),
-        screenshot.toPNG(),
-        duration,
-        direction
-      );
-    } catch (e) {
+    Rotator.rotate(mainWindow, duration, direction).catch((e) => {
       console.error('Failed to rotate windows:', e.stack || e);
-    }
+    });
   });
 }
 

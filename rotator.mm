@@ -6,7 +6,7 @@
 const int DIRECTION_LEFT = 0;
 
 napi_value rotate(napi_env env, napi_callback_info info) {
-  NSLog(@"electron-window-rotator:rotate()");
+  NSLog(@"rotate()");
 
   napi_status status;
 
@@ -15,12 +15,12 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   status = napi_get_cb_info(env, info, &argc, args, 0, 0);
   if (status != napi_ok) {
     napi_throw_error(
-        env, NULL, "electron-window-rotator:rotate(): failed to get arguments");
+        env, NULL, "rotate(): failed to get arguments");
     return NULL;
   } else if (argc < 4) {
     napi_throw_error(
         env, NULL,
-        "electron-window-rotator:rotate(): wrong number of arguments");
+        "rotate(): wrong number of arguments");
     return NULL;
   }
 
@@ -31,11 +31,11 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   if (status != napi_ok) {
     napi_throw_error(
         env, NULL,
-        "electron-window-rotator:rotate(): cannot read window handle");
+        "rotate(): cannot read window handle");
     return NULL;
   } else if (windowBufferLength == 0) {
     napi_throw_error(env, NULL,
-                     "electron-window-rotator:rotate(): empty window handle");
+                     "rotate(): empty window handle");
     return NULL;
   }
 
@@ -44,7 +44,7 @@ napi_value rotate(napi_env env, napi_callback_info info) {
       mainWindowView.window == nil) {
     napi_throw_error(
         env, NULL,
-        "electron-window-rotator:rotate(): NSView doesn't contain window");
+        "rotate(): NSView doesn't contain window");
     return NULL;
   }
 
@@ -55,11 +55,11 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   if (status != napi_ok) {
     napi_throw_error(
         env, NULL,
-        "electron-window-rotator:rotate(): cannot read screenshot handle");
+        "rotate(): cannot read screenshot handle");
     return NULL;
   } else if (electronScreenshotBufferLength == 0) {
     napi_throw_error(
-        env, NULL, "electron-window-rotator:rotate(): empty screenshot handle");
+        env, NULL, "rotate(): empty screenshot handle");
     return NULL;
   }
 
@@ -68,11 +68,11 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   if (status != napi_ok) {
     napi_throw_error(
         env, NULL,
-        "electron-window-rotator:rotate(): cannot read duration from args");
+        "rotate(): cannot read duration from args");
     return NULL;
   } else if (duration == 0) {
     napi_throw_error(env, NULL,
-                     "electron-window-rotator:rotate(): empty duration arg");
+                     "rotate(): empty duration arg");
     return NULL;
   }
 
@@ -81,7 +81,7 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   if (status != napi_ok) {
     napi_throw_error(
         env, NULL,
-        "electron-window-rotator:rotate(): cannot read direction from args");
+        "rotate(): cannot read direction from args");
     return NULL;
   }
 
@@ -119,7 +119,7 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   NSImage *windowScreenshot =
       [[NSImage alloc] initWithSize:windowScreenshotSize];
   [windowScreenshot addRepresentation:windowScreenshotRep];
-  NSLog(@"electron-window-rotator:rotate(): window screenshot size: %0.0f x "
+  NSLog(@"rotate(): window screenshot size: %0.0f x "
         @"%0.0f",
         windowScreenshotSize.width, windowScreenshotSize.height);
 
@@ -134,7 +134,7 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   NSImage *electronScreenshot =
       [[NSImage alloc] initWithSize:electronScreenshotSize];
   [electronScreenshot addRepresentation:electronScreenshotRep];
-  NSLog(@"electron-window-rotator:rotate(): electron screenshot size: %0.0f x "
+  NSLog(@"rotate(): electron screenshot size: %0.0f x "
         @"%0.0f",
         electronScreenshotSize.width, electronScreenshotSize.height);
 
@@ -182,11 +182,11 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   [CATransaction setCompletionBlock:^{
     [window setAlphaValue:1.0];
     [animationWindow close];
-    NSLog(@"electron-window-rotator:rotate(): animation done");
+    NSLog(@"rotate(): animation done");
   }];
   [imageLayer addAnimation:animation forKey:@"rotation"];
   [CATransaction commit];
 
-  NSLog(@"electron-window-rotator:rotate(): done");
+  NSLog(@"rotate(): done");
   return NULL;
 }

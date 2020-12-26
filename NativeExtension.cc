@@ -8,9 +8,7 @@ napi_value init(napi_env env, napi_value exports) {
 
   status = napi_define_properties(env, exports, 1, descriptors);
   if (status != napi_ok) {
-    napi_throw_error(
-        env, NULL,
-        "electron-window-rotator:rotate(): failed to define module properties");
+    napi_throw_error(env, NULL, "failed to define module properties");
     return NULL;
   }
 
