@@ -8,7 +8,7 @@ Rotate native Electron window on macOS.
 
 ![Demo gif](https://raw.githubusercontent.com/antonfisher/electron-window-rotator/docs/images/demo-1.0.0.gif)
 
->**Note:** this is a silly proof-of-concept npm module that demonstrated using Nodejs N-API.
+>**Note:** this is a silly proof-of-concept npm module that demonstrates using Nodejs N-API.
 
 ## Run demo locally:
 
@@ -24,6 +24,7 @@ npm start
 ## Usage:
 
 ```shell
+xcode-select --install
 npm install electron-window-rotator
 ```
 
