@@ -14,13 +14,10 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   napi_value args[4];
   status = napi_get_cb_info(env, info, &argc, args, 0, 0);
   if (status != napi_ok) {
-    napi_throw_error(
-        env, NULL, "rotate(): failed to get arguments");
+    napi_throw_error(env, NULL, "rotate(): failed to get arguments");
     return NULL;
   } else if (argc < 4) {
-    napi_throw_error(
-        env, NULL,
-        "rotate(): wrong number of arguments");
+    napi_throw_error(env, NULL, "rotate(): wrong number of arguments");
     return NULL;
   }
 
@@ -29,22 +26,17 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   status =
       napi_get_buffer_info(env, args[0], &windowBuffer, &windowBufferLength);
   if (status != napi_ok) {
-    napi_throw_error(
-        env, NULL,
-        "rotate(): cannot read window handle");
+    napi_throw_error(env, NULL, "rotate(): cannot read window handle");
     return NULL;
   } else if (windowBufferLength == 0) {
-    napi_throw_error(env, NULL,
-                     "rotate(): empty window handle");
+    napi_throw_error(env, NULL, "rotate(): empty window handle");
     return NULL;
   }
 
   NSView *mainWindowView = *static_cast<NSView **>(windowBuffer);
   if (![mainWindowView respondsToSelector:@selector(window)] ||
       mainWindowView.window == nil) {
-    napi_throw_error(
-        env, NULL,
-        "rotate(): NSView doesn't contain window");
+    napi_throw_error(env, NULL, "rotate(): NSView doesn't contain window");
     return NULL;
   }
 
@@ -53,35 +45,27 @@ napi_value rotate(napi_env env, napi_callback_info info) {
   status = napi_get_buffer_info(env, args[1], &electronScreenshotBuffer,
                                 &electronScreenshotBufferLength);
   if (status != napi_ok) {
-    napi_throw_error(
-        env, NULL,
-        "rotate(): cannot read screenshot handle");
+    napi_throw_error(env, NULL, "rotate(): cannot read screenshot handle");
     return NULL;
   } else if (electronScreenshotBufferLength == 0) {
-    napi_throw_error(
-        env, NULL, "rotate(): empty screenshot handle");
+    napi_throw_error(env, NULL, "rotate(): empty screenshot handle");
     return NULL;
   }
 
   int duration;
   status = napi_get_value_int32(env, args[2], &duration);
   if (status != napi_ok) {
-    napi_throw_error(
-        env, NULL,
-        "rotate(): cannot read duration from args");
+    napi_throw_error(env, NULL, "rotate(): cannot read duration from args");
     return NULL;
   } else if (duration == 0) {
-    napi_throw_error(env, NULL,
-                     "rotate(): empty duration arg");
+    napi_throw_error(env, NULL, "rotate(): empty duration arg");
     return NULL;
   }
 
   int direction;
   status = napi_get_value_int32(env, args[3], &direction);
   if (status != napi_ok) {
-    napi_throw_error(
-        env, NULL,
-        "rotate(): cannot read direction from args");
+    napi_throw_error(env, NULL, "rotate(): cannot read direction from args");
     return NULL;
   }
 
@@ -138,20 +122,16 @@ napi_value rotate(napi_env env, napi_callback_info info) {
         @"%0.0f",
         electronScreenshotSize.width, electronScreenshotSize.height);
 
-  // combine two screenshots
-  NSImage *image = [[NSImage alloc] initWithSize:windowScreenshotSize];
-  [image lockFocus];
-  CGRect windowScreenshotRect =
-      CGRectMake(0, 0, windowScreenshotSize.width, windowScreenshotSize.height);
-  [windowScreenshot drawInRect:windowScreenshotRect];
+  // combine two screenshots -- put electron app screenshot into native one
+  [windowScreenshot lockFocus];
   CGRect electronScreenshotRect = CGRectMake(0, 0, electronScreenshotSize.width,
                                              electronScreenshotSize.height);
   [electronScreenshot drawInRect:electronScreenshotRect];
-  [image unlockFocus];
+  [windowScreenshot unlockFocus];
 
   // create image layer with rounded corners
   CALayer *imageLayer = [CALayer layer];
-  [imageLayer setContents:image];
+  [imageLayer setContents:windowScreenshot];
   [imageLayer setCornerRadius:10.0f];
   [imageLayer setMasksToBounds:YES]; // cuts shadows as well
 
