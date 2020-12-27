@@ -1,6 +1,6 @@
 # electron-window-rotator
 
-Rotate native Electron window on macOS.
+Rotate native Electron window on macOS
 
 [![npm](https://img.shields.io/npm/v/electron-window-rotator.svg?colorB=brightgreen)](https://www.npmjs.com/package/electron-window-rotator)
 [![npm](https://img.shields.io/npm/dt/electron-window-rotator.svg?colorB=brightgreen)](https://www.npmjs.com/package/electron-window-rotator)
@@ -10,23 +10,17 @@ Rotate native Electron window on macOS.
 
 >**Note:** this is a silly proof-of-concept npm module that demonstrates using Nodejs N-API.
 
-## Run demo locally:
+Read a blog post about it: [https://antonfisher.com/posts/2020/12/27/how-to-animate-native-electron-window/](https://antonfisher.com/posts/2020/12/27/how-to-animate-native-electron-window/)
+
+## Usage
+
+Install the module:
 
 ```shell
-git clone https://github.com/antonfisher/electron-window-rotator.git
-cd electron-window-rotator
-npm install
-cd demo && npm install && cd -
-xcode-select --install
-npm start
-```
-
-## Usage:
-
-```shell
-xcode-select --install
 npm install electron-window-rotator
 ```
+
+Rotate BrowserWindow every 3 seconds:
 
 ```js
 const Rotator = require('electron-window-rotator');
@@ -40,3 +34,17 @@ setInterval(() => {
   );
 }, 3000);
 ```
+
+## Build and run demo locally
+
+```shell
+git clone https://github.com/antonfisher/electron-window-rotator.git
+cd electron-window-rotator && npm install
+cd demo && npm install && cd -
+xcode-select --install
+npm start
+```
+
+## License
+
+MIT License
